@@ -5,19 +5,19 @@ import pynotify
 import time, threading
 import os
 
-def checkBatPercentage():
+def checkBatPercentage():#check the battery level using awk script
 	percentage = (commands.getoutput("acpi | awk '{print $4}'"))
 	percentint = int(percentage[:-2])
 	return percentint
 
-def checkBatStatus():
+def checkBatStatus():#checks whether battery is charging or discharging
 	return (commands.getoutput("acpi | awk '{print $3}'"))[:-1]
 
-def notifyUser(msg):
+def notifyUser(msg):#native notifications
 	pynotify.init(msg)
 	notification = pynotify.Notification("Battery "+checkBatStatus()+" "+str(checkBatPercentage())+"%"+msg)
 	notification.show()
-	os.system('mplayer "/home/harshavardhanbabu/Documents/BatteryCheck/test.wav"')
+	os.system('mplayer "$HOME/Documents/BatteryCheck/test.wav"') #absolute path for the music file
 	return None
 
 def Result():
