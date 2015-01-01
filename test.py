@@ -1,9 +1,16 @@
 #!/usr/bin/env python
+"""test.py: Notify the user when the battery is charged over 90% and discharging below 20%"""
+
+__author__      = "Harsha Vardhan Babu"
+__copyright__   = "Copyright 2014"
 
 import commands
 import pynotify
 import time, threading
 import os
+
+MAX_LEVEL = 90
+MIN_LEVEL = 20
 
 def checkBatPercentage():#check the battery level using awk script
 	percentage = (commands.getoutput("acpi | awk '{print $4}'"))
@@ -21,10 +28,10 @@ def notifyUser(msg):#native notifications
 	return None
 
 def Result():
-	if(checkBatStatus() == "Charging") and (checkBatPercentage() >= 90):
+	if(checkBatStatus() == "Charging") and (checkBatPercentage() >= MAX_LEVEL):
 		return "Unplug AC power !!"
-	elif(checkBatStatus() == "Discharging") and (checkBatPercentage() <= 20):
-		return "plug AC power !!"
+	elif(checkBatStatus() == "Discharging") and (checkBatPercentage() <= MIN_LEVEL):
+		return "Plug AC power !!"
 	else:
 		return "None"
 
